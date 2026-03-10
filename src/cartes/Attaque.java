@@ -7,22 +7,7 @@ public class Attaque extends Bataille {
 	}
 	
 	public String toString() {
-		switch (type) {
-			case FEU: {
-				System.out.println("carte d'attaque :" + type.getCarteAttaque());
-			}
-			case ESSENCE: {
-				System.out.println("carte d'attaque :" + type.getCarteAttaque());				
-			}
-			case CREVAISON: {
-				System.out.println("carte d'attaque :" + type.getCarteAttaque());				
-			}
-			case ACCIDENT: {
-				System.out.println("carte d'attaque :" + type.getCarteAttaque());				
-			}
-			default:
-				throw new IllegalArgumentException("Unexpected value ");
-			}
+		return type.getCarteAttaque();
 		
 	}
 

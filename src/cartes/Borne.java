@@ -3,12 +3,16 @@ package cartes;
 public class Borne extends Carte {
 	private int km;
 
-	public Borne() {
-		// TODO Auto-generated constructor stub
+	public Borne(int km) {
+		this.km = km;
 	}
 	
+	public int getKm() { 
+		return km; 
+		}
+	@Override
 	public String toString() {
-		return String.valueOf(km) + "kilomètres";
+		return km + "KM";
 	}
 	
 

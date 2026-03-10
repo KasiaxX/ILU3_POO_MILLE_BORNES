@@ -14,6 +14,7 @@ public enum Type {
 	private Type(String carteAttaque, String carteParade, String carteBotte) {
 		this.carteAttaque = carteAttaque;
 		this.carteParade = carteParade;
+		this.carteBotte = carteBotte;
 	}
 	
 	public String getCarteAttaque() {
