@@ -1,12 +1,13 @@
 package cartes;
 
 public abstract class Carte {
-	private String nom;
-	
-	protected void Cartes(String nom) {
-		this.nom = nom;
-	}
 
-	
+	@Override
+	public boolean equals(Object objet) {
+		if(objet instanceof Carte carte ) {
+			return carte.equals(carte);
+		}
+		return false;
+	}
 	
 }

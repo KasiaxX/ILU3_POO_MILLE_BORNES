@@ -9,7 +9,7 @@ public class Sabot implements Iterable<Carte> {
 
 	private Carte[] cartes;
 	private int nbCartes;
-	int modCount = 0;
+	int modifCount = 0;
 
 	public Sabot(Carte[] cartes) {
 		this.cartes = cartes;
@@ -22,11 +22,11 @@ public class Sabot implements Iterable<Carte> {
 
 	public void ajouterCarte(Carte carte) {
 		if (nbCartes >= cartes.length) {
-			throw new RuntimeException("Trop de cartes dans le sabot");
+			throw new RuntimeException("Trop de cartes");
 		}
 		cartes[nbCartes] = carte;
 		nbCartes++;
-		modCount++;
+		modifCount++;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class Sabot implements Iterable<Carte> {
 	public Carte piocher() {
 		
 		if (estVide()) {
-			throw new NoSuchElementException("Sabot vide");
+			throw new NoSuchElementException("vide");
 		}
 		
 		Iterator<Carte> iter = iterator();
@@ -50,13 +50,13 @@ public class Sabot implements Iterable<Carte> {
         return piocher();
     }
 
-///////////////////////////////////// CLASSE "SABOTITERATOR" //////////////////////////////////////////////
+//class interne
 
 	private class SabotIterator implements Iterator<Carte> {
 
 		private int position = 0;
 		private boolean canRemove = false;
-		private int expectedModCount = modCount;
+		private int expectedModifCount = modifCount;
 
 		@Override
 		public boolean hasNext() {
@@ -81,7 +81,7 @@ public class Sabot implements Iterable<Carte> {
 			concurrentModification();
 			
 			if (!canRemove) {
-				throw new IllegalStateException("remove apres le next");
+				throw new IllegalStateException("il faut remove apres le Next");
 			}
 
 			for (int i = position - 1; i < nbCartes - 1; i++) {
@@ -90,13 +90,13 @@ public class Sabot implements Iterable<Carte> {
 			
 			nbCartes--;
 			position--;
-			modCount++;
-			expectedModCount = modCount;
+			modifCount++;
+			expectedModifCount = modifCount;
 			canRemove = false;
 		}
 
 		private void concurrentModification() {
-			if (modCount != expectedModCount) {
+			if (modifCount != expectedModifCount) {
 				throw new ConcurrentModificationException();
 			}
 		}

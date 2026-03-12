@@ -2,10 +2,35 @@ package cartes;
 
 public class JeuDeCartes {
 
-	private Configuration[] typesCartes = new Configuration[19];
+	private Configuration[] typesCartes = {
+			new Configuration(new Botte(Type.FEU), 1), 
+			new Configuration(new Botte(Type.ESSENCE), 1), 
+			new Configuration(new Botte(Type.CREVAISON), 1), 
+			new Configuration(new Botte(Type.ACCIDENT), 1), 
+			
+			new Configuration(new Attaque(Type.FEU), 5),
+			new Configuration(new Attaque(Type.ESSENCE), 4),
+			new Configuration(new Attaque(Type.CREVAISON), 3),
+			new Configuration(new Attaque(Type.ACCIDENT), 3),
+			
+			new Configuration(new Parade(Type.FEU), 14),
+			new Configuration(new Parade(Type.ESSENCE), 6),
+			new Configuration(new Parade(Type.CREVAISON), 6),
+			new Configuration(new Parade(Type.ACCIDENT), 6),
+			
+			new Configuration(new DebutLimite(), 4),
+			new Configuration(new FinLimite(), 6),
+			
+			new Configuration(new Borne(25), 10),
+			new Configuration(new Borne(50), 10),
+			new Configuration(new Borne(75), 10),
+			new Configuration(new Borne(100), 12),
+			new Configuration(new Borne(200), 4),			
+	};
+	
 	private int nbTypes = 0;
 
-	// Classe interne statique car elle ne dépend pas de l'instance de JeuDeCartes
+	// Classe interne statique car elle depend pas de l'instance de JeuDeCartes
 	private static class Configuration {
 		private Carte carte;
 		private int nbExemplaires;
@@ -23,22 +48,15 @@ public class JeuDeCartes {
 			return nbExemplaires;
 		}
 	}
-
-	// Méthode pour ajouter une configuration au tableau
-	public void ajouterConfiguration(Carte carte, int nb) {
-		if (nbTypes < typesCartes.length) {
-			typesCartes[nbTypes++] = new Configuration(carte, nb);
-		}
-	}
 	
 	public Carte[] donnerCartes() {
-	    // 1. Calculer la taille totale du tableau 
+	    //Calculer la taille totale du tab 
 	    int total = 0;
 	    for (int i = 0; i < nbTypes; i++) {
 	        total += typesCartes[i].getNbExemplaires();
 	    }
 
-	    // 2. Remplir le tableau final 
+	    //Remplir le tab final 
 	    Carte[] toutesCartes = new Carte[total];
 	    int index = 0;
 	    for (int i = 0; i < nbTypes; i++) {
@@ -50,16 +68,16 @@ public class JeuDeCartes {
 	}
 	
 	public String affichageJeuDeCartes() {
-	    StringBuilder sb = new StringBuilder("JEU:\n\n");
+	    StringBuilder stbild = new StringBuilder("JEU:\n\n");
 	    for (int i = 0; i < typesCartes.length; i++) {
-	        // Condition essentielle pour éviter le "null"
+	        //éviter le null
 	        if (typesCartes[i] != null) { 
-	            sb.append(typesCartes[i].getNbExemplaires())
+	        	stbild.append(typesCartes[i].getNbExemplaires())
 	              .append(" ")
 	              .append(typesCartes[i].getCarte().toString())
 	              .append("\n");
 	        }
 	    }
-	    return sb.toString();
+	    return stbild.toString();
 	}
 }
