@@ -28,6 +28,35 @@ public class JeuDeCartes {
 			new Configuration(new Borne(200), 4),			
 	};
 	
+	/* 
+	 vérifie que le
+	tableau de cartes renvoyé par la méthode donnerCartes et conforme à la
+	configuration, c’est-à-dire que le nombre d’exemplaires souhaité pour chaque
+	type de carte a bien été respecté
+	*/
+	public boolean checkCount() {
+		//recuperer le paquet a verifier
+		Carte[] paquet = donnerCartes();	//donnerCartes -> fabriquer le tab complet de tt les cartes
+		
+		//lire une par une les lignes de tab typesCartes
+		for(Configuration configuration : typesCartes) {
+			int compteur = 0; 
+			
+			//Inspecter chaque carte du paquet
+			for (Carte carte : paquet) {
+				if (carte.equals(configuration.getCarte())) {
+					compteur++;
+				}
+			}
+			// Si le compte ne correspond pas à la configuration, il y a une erreur
+			if (compteur != configuration.getNbExemplaires()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	private int nbTypes = 0;
 
 	// Classe interne statique car elle depend pas de l'instance de JeuDeCartes
@@ -52,14 +81,14 @@ public class JeuDeCartes {
 	public Carte[] donnerCartes() {
 	    //Calculer la taille totale du tab 
 	    int total = 0;
-	    for (int i = 0; i < nbTypes; i++) {
+	    for (int i = 0; i < typesCartes.length; i++) {
 	        total += typesCartes[i].getNbExemplaires();
 	    }
 
 	    //Remplir le tab final 
 	    Carte[] toutesCartes = new Carte[total];
 	    int index = 0;
-	    for (int i = 0; i < nbTypes; i++) {
+	    for (int i = 0; i < typesCartes.length; i++) {
 	        for (int j = 0; j < typesCartes[i].getNbExemplaires(); j++) {
 	            toutesCartes[index++] = typesCartes[i].getCarte();
 	        }

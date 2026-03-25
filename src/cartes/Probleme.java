@@ -7,14 +7,14 @@ public abstract class Probleme extends Carte {
 		this.type = type;
 	}
 	
-	public Type getType(Type type) {
+	public Type getType() {
 		return type;
 	}
 	
 	@Override
 	public boolean equals(Object objet) {
 		if(objet instanceof Probleme probleme ) {
-			return probleme.equals(probleme);
+			return super.equals(probleme) && this.type.equals(probleme.getType());
 		}
 		return false;
 	}
