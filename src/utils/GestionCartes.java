@@ -6,6 +6,10 @@ public class GestionCartes {
 
 	private static final Random rand = new Random();
 
+	private GestionCartes() {
+		throw new IllegalStateException("Utility Class");
+	}
+
 	// EXTRAIRE : version 1
 	public static <T> T extraire(List<T> liste) {
 
@@ -13,24 +17,19 @@ public class GestionCartes {
 		return liste.remove(index);
 	}
 
-
-	
 	// EXTRAIRE : version 2
 	public static <T> T extraireIterateur(List<T> liste) {
 
 		int indice = rand.nextInt(liste.size());
 
-		ListIterator<T> iterator = liste.listIterator();
-		T elem = null;
-		for (int i = 0; i <= indice; i++) {
-
-			elem = iterator.next();
-		}
+		ListIterator<T> iterator = liste.listIterator(indice);
+		//TODO boucle inutile utiliser la propriété du ListIterator
+		T elem = iterator.next();
 		iterator.remove();
 
 		return elem;
 	}
-	
+
 //	public static <T> T extraireIterator(List<T> liste) {
 //		int indice = rand.nextInt(liste.size());
 //	
@@ -41,7 +40,7 @@ public class GestionCartes {
 //		return element;
 //	}
 
-	// MELANGER	
+	// MELANGER
 	public static <T> List<T> melanger(List<T> liste) {
 		List<T> listeMelangee = new ArrayList<>();
 
@@ -52,7 +51,6 @@ public class GestionCartes {
 	}
 
 	// VerfierMelanger
-
 
 	public static <T> boolean verifierMelange(List<T> liste1, List<T> liste2) {
 		if (liste1.size() != liste2.size())
@@ -70,15 +68,15 @@ public class GestionCartes {
 	public static <T> List<T> rassemblerV2(List<T> liste) {
 
 		List<T> listeRassemblee = new ArrayList<>();
-		
+
 		while (!liste.isEmpty()) {
 			T element = liste.remove(0);
 			listeRassemblee.add(element);
 			Iterator<T> it = liste.iterator();
-			
+
 			while (it.hasNext()) {
 				T elem = it.next();
-				
+
 				if (elem.equals(element)) {
 					listeRassemblee.add(elem);
 					it.remove();
@@ -87,7 +85,7 @@ public class GestionCartes {
 		}
 		return listeRassemblee;
 	}
-	
+
 //	public static <T> List<T> rassemberV2(List<T> liste) {
 //		List<T> listeRassemblee = new ArrayList<>();
 //		for (T element : liste) {
@@ -104,6 +102,7 @@ public class GestionCartes {
 
 	// Verifier RASSEMBLEMENT
 
+	//TODO utiliser 2 méthodes en utilisant la propriété du constructeur du ListIterator 
 	public static <T> boolean verifierRassemblement(List<T> liste) {
 		if (liste.isEmpty())
 			return true;
@@ -127,6 +126,17 @@ public class GestionCartes {
 		}
 		return true;
 	}
+	
+//	private <T> boolean verifier(List<T> liste, ListIterator<T> it1, T precedent ) {
+//		ListIterator<T> it2 = liste.listIterator(it1.nextIndex());
+//		while (it2.hasNext()) {
+//			if (it2.next().equals(precedent)) {
+//				return false;
+//			}
+//		}
+//	}
+	
+	
 }
 
 //	public static <T> boolean verifierRassemblement(List<T> liste) {

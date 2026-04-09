@@ -69,7 +69,7 @@ public class ZoneDeJeu {
         }
         Carte sommet = pileBataille.get(pileBataille.size() - 1);
         
-        return sommet.equals(Cartes.FEU_VERT);
+        return sommet.equals(Carte.FEU_VERT);
     }
 	
 	private boolean estDepotFeuVertAutorise() {
