@@ -114,27 +114,34 @@ public class GestionCartes {
 			T courant = it1.next();
 
 			if (!courant.equals(precedent)) {
-				ListIterator<T> it2 = liste.listIterator(it1.nextIndex());
-				while (it2.hasNext()) {
-					if (it2.next().equals(precedent)) {
-						return false;
-					}
+				// it1.nextIndex() donne la osition exacte pour commancer la recherche
+				
+				boolean elemTrouverApres = chercherElemApresIndex(liste, precedent, it1.nextIndex());
+				
+				if(elemTrouverApres) {
+					return false;
 				}
-				// On met à jour la valeur precedente
+ 				// On met à jour la valeur precedente
 				precedent = courant;
 			}
 		}
 		return true;
 	}
 	
-//	private <T> boolean verifier(List<T> liste, ListIterator<T> it1, T precedent ) {
-//		ListIterator<T> it2 = liste.listIterator(it1.nextIndex());
-//		while (it2.hasNext()) {
-//			if (it2.next().equals(precedent)) {
-//				return false;
-//			}
-//		}
-//	}
+	private static <T> boolean chercherElemApresIndex(List<T> liste, T element, int indexDepart) {
+		
+		ListIterator<T> iterator = liste.listIterator(indexDepart);
+		
+		while (iterator.hasNext()) {
+			if (iterator.next().equals(element)) {
+				return true;
+			}
+		}
+		return false; //elem n'existe plus apres cette index
+		
+		
+		
+	} 
 	
 	
 }
@@ -155,7 +162,7 @@ public class GestionCartes {
 //				break;
 //			}
 //		}
-//		}
+//		
 //		return true;
 //		}
 //}

@@ -2,10 +2,12 @@ package jeu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import cartes.Attaque;
 import cartes.Bataille;
 import cartes.Borne;
+import cartes.Botte;
 import cartes.Carte;
 import cartes.DebutLimite;
 import cartes.FinLimite;
@@ -17,6 +19,9 @@ public class ZoneDeJeu {
 	private List <Carte> pileDeLimite;
 	private List <Carte> pileBataille;
 	private List <Carte> collectionDeBornes;
+	
+	private Set<Botte> ensembleBotte;
+	
 	
 	public ZoneDeJeu() {
 		pileDeLimite = new ArrayList<>();
@@ -69,7 +74,7 @@ public class ZoneDeJeu {
         }
         Carte sommet = pileBataille.get(pileBataille.size() - 1);
         
-        return sommet.equals(Carte.FEU_VERT);
+        return sommet.equals(Cartes.FEU_VERT);
     }
 	
 	private boolean estDepotFeuVertAutorise() {
@@ -116,7 +121,7 @@ public class ZoneDeJeu {
             
             Carte sommet = pileBataille.get(pileBataille.size() - 1);
             
-            return sommet instanceof Attaque && ((Attaque) sommet).getType().equals(parade.getType());
+            return (sommet instanceof Attaque && ((Attaque) sommet).getType().equals(parade.getType()));
         }
         return false;
     }
@@ -136,6 +141,14 @@ public class ZoneDeJeu {
         }
         
         return false;
+    }
+    
+    // --- TP4 ---
+    
+    public boolean estPrioritaire() {
+    	
+    	
+    	return false;
     }
 }
 	
