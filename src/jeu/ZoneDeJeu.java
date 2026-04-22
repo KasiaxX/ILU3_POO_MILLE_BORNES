@@ -1,6 +1,7 @@
 package jeu;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import cartes.DebutLimite;
 import cartes.FinLimite;
 import cartes.Limite;
 import cartes.Parade;
+import cartes.Type;
 
 public class ZoneDeJeu {
 	
@@ -20,21 +22,34 @@ public class ZoneDeJeu {
 	private List <Carte> pileBataille;
 	private List <Carte> collectionDeBornes;
 	
-	private Set<Botte> ensembleBotte;
+	// TP4 Q1 : HashSet pour gérer les bottes uniques sans doublons
+	private Set<Botte> ensembleBottes;
 	
 	
 	public ZoneDeJeu() {
 		pileDeLimite = new ArrayList<>();
 		pileBataille = new ArrayList<>();
 		collectionDeBornes = new ArrayList<>();
+		ensembleBottes = new HashSet<>(); // Initialisation du HashSet
 		
+	}
+	
+	//TP4 Q2
+	public boolean estPrioritaire() {
+		return ensembleBottes.contains(Cartes.PRIORITAIRE);
+	}
+	
+	//verifier si le joueur a la botte associee à un type
+	private boolean possedeBotte(Type type) {
+		return ensembleBottes.contains(new Botte(type));
 	}
 	
 	// --- PARTIE 2 ----
 	
 	public int donnerLimitationVitesse() {
-	    // Si la pile est vide ou que la derniere carte posée est une FinLimite
-	    if (pileDeLimite.isEmpty() || pileDeLimite.get(pileDeLimite.size() - 1) instanceof FinLimite) {
+		//TP4 Q3
+	    // Si la pile est prioritaire ou vide ou que la derniere carte posée est une FinLimite
+	    if (estPrioritaire() || pileDeLimite.isEmpty() || pileDeLimite.get(pileDeLimite.size() - 1) instanceof FinLimite) {
 	        return 200;
 	    }
 	    return 50;
@@ -51,6 +66,7 @@ public class ZoneDeJeu {
 	    return total;
 	}
 	
+	//TP4 Q4 ajouter le depot des bottes
 	//ranger la carte au bon endroit selon son type
 	public void deposer(Carte carte) {
 	    if (carte instanceof Borne) {
@@ -61,30 +77,49 @@ public class ZoneDeJeu {
 	        
 	    } else if (carte instanceof Bataille) {
 	        pileBataille.add(carte);
+	        
+	    } else if (carte instanceof Botte botte) {
+	    	ensembleBottes.add(botte);
 	    }
 	}
 	
 	
 	// --- PARTIE 3 ---
 	
+	
 	public boolean peutAvancer() {
         // On peut avancer si le sommet de la pile bataille est un FEU_VERT
         if (pileBataille.isEmpty()) {
-        	return false;
+        	//TP4 Q5
+        	return estPrioritaire();
         }
         Carte sommet = pileBataille.get(pileBataille.size() - 1);
         
         return sommet.equals(Cartes.FEU_VERT);
     }
 	
+	//TP4 Q6
 	private boolean estDepotFeuVertAutorise() {
+		if (estPrioritaire()) {
+			return false;
+		}
+		
         if (pileBataille.isEmpty()) { 
         	return true;
         }
         Carte sommet = pileBataille.get(pileBataille.size() - 1);
-        // Autorise si sommet est Feu Rouge ou une Parade (qui n'est pas déjà un vert)
-        return sommet.equals(Cartes.FEU_ROUGE) || (sommet instanceof Parade && !sommet.equals(Cartes.FEU_VERT));
+        
+        if (sommet.equals(Cartes.FEU_ROUGE) || (sommet instanceof Parade && !sommet.equals(Cartes.FEU_VERT))) {
+        	return true;
+        }  
+ 
+        if (sommet instanceof Attaque attaque && possedeBotte(attaque.getType())) {
+        	return true;
+        }
+        
+        return false;
     }
+	
 	
 	private boolean estDepotBorneAutorise(Borne borne) {
         boolean pasBloque = peutAvancer();
@@ -96,8 +131,16 @@ public class ZoneDeJeu {
         return pasBloque && respectLimite && scoreOk;
     }
 	
+	//TP4 Q7
 	private boolean estDepotLimiteAutorise(Limite limite) {
+		// Inutile de déposer une limite si on est prioritaire
+		if (estPrioritaire()) { 
+			return false; 
+		}
+			
         if (limite instanceof DebutLimite) {
+        	//instanceof  : "Est-ce que cet objet a été créé à partir de cette classe ?"
+        	//instanceof DebutLimite : vérifier le type exact de la carte qui se trouve au sommet de la pile
             return pileDeLimite.isEmpty() || pileDeLimite.get(pileDeLimite.size() - 1) instanceof FinLimite;
             
         } else if (limite instanceof FinLimite) {
@@ -107,9 +150,16 @@ public class ZoneDeJeu {
         return false;
     }
 	
+	//TP4 Q8
 	private boolean estDepotBatailleAutorise(Bataille bataille) {
+		// Impossible d'attaquer ou parer si le joueur a déjà la botte d'immunité
+		if (possedeBotte(bataille.getType())) { 
+			return false;
+		}
+				
         if (bataille instanceof Attaque) {
             return peutAvancer(); // On peut attaquer si le joueur n'est pas deja bloque
+            
         } else if (bataille instanceof Parade parade) {
             if (parade.equals(Cartes.FEU_VERT)) {
                 return estDepotFeuVertAutorise();
@@ -127,7 +177,13 @@ public class ZoneDeJeu {
     }
 
     
+	//TP4 Q9
     public boolean estDepotAutorise(Carte carte) {
+    	// Ajout des bottes sans condition
+    	if (carte instanceof Botte) {
+    		return true; 
+    	}
+    	
         if (carte instanceof Borne borne) {
         	return estDepotBorneAutorise(borne);
         }
@@ -143,13 +199,6 @@ public class ZoneDeJeu {
         return false;
     }
     
-    // --- TP4 ---
-    
-    public boolean estPrioritaire() {
-    	
-    	
-    	return false;
-    }
 }
 	
 	

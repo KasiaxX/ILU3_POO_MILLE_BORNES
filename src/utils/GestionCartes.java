@@ -119,7 +119,7 @@ public class GestionCartes {
 				boolean elemTrouverApres = chercherElemApresIndex(liste, precedent, it1.nextIndex());
 				
 				if(elemTrouverApres) {
-					return false;
+					return false; // Si l'élément réapparaît plus loin, ce n'est pas rassemblé
 				}
  				// On met à jour la valeur precedente
 				precedent = courant;
@@ -128,6 +128,7 @@ public class GestionCartes {
 		return true;
 	}
 	
+	//Utilise indexDepart pour commencer au bon endroit
 	private static <T> boolean chercherElemApresIndex(List<T> liste, T element, int indexDepart) {
 		
 		ListIterator<T> iterator = liste.listIterator(indexDepart);
