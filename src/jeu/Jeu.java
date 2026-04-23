@@ -11,14 +11,13 @@ import java.util.TreeSet;
 
 public class Jeu {
 	private Sabot sabot;
-	private List<Joueur> joueurs;
+	//TP4 partie3
+	private List<Joueur> joueurs = new ArrayList<>();
 	private Iterator<Joueur> iterateurJoueurs;
 
 	public Jeu(Sabot sabot) {
 		this.sabot = sabot;
 		// La liste des joueurs ordonnés selon leur ordre d'inscription 
-		//TP4 partie3
-		this.joueurs = new ArrayList<>(); 
 	}
 
 	// Permet d'ajouter des joueurs à la partie 
